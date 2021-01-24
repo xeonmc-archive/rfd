@@ -1,1 +1,1 @@
-exec wine reflexded.exe
+exec wine reflexded.exe "$STARTFLAGS"
