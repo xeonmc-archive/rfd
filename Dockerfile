@@ -3,9 +3,12 @@ USER root
 RUN apk update
 RUN apk add wine freetype
 
-ADD ./reflex /reflex
+ADD ./reflexFromSteam /reflex
+ADD ./shippingMaps /reflex/maps
+ADD ./shippingConfigs /reflex/
 
-ADD svstart.sh /reflex/
+ADD start-reflex.sh /reflex/
+
 WORKDIR /reflex
 
-CMD ["sh", "/reflex/svstart.sh"]
+CMD ["sh", "/reflex/start-reflex.sh"]
