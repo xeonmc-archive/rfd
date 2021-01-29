@@ -1,6 +1,0 @@
-[[ -n "$PORT" ]] && PORT="+sv_gameport $PORT "
-[[ -n "$STEAM" ]] && STEAM="+sv_steam $STEAM "
-[[ -n "$PASSWORD" ]] && PASSWORD="+sv_password $PASSWORD "
-[[ -n "$SERVERNAME" ]] && SERVERNAME="+sv_hostname $SERVERNAME "
-STARTFLAGS="$PORT$STEAM$PASSWORD$SERVERNAME$EXTRAFLAGS"
-exec wine reflexded.exe "$STARTFLAGS"
