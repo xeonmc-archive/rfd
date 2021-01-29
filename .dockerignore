@@ -1,0 +1,9 @@
+# ignore the massive lighting and unnecessary navmesh & preview files
+*.light
+*.nav
+*.preview
+# ignore folders steamapps, base, and maps, to replace with our own set
+reflexFromSteam/*
+!reflexFromSteam/*.*
+# ignore the default cfg
+reflexFromSteam/dedicatedserver*
