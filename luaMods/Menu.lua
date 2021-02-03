@@ -90,6 +90,7 @@ function Menu:initialize()
 	widgetCreateConsoleVariable("startbot6", "string", "none");
 	widgetCreateConsoleVariable("startbot7", "string", "none");
 	widgetCreateConsoleVariable("startbot8", "string", "none");
+	widgetCreateConsoleVariable("replayfilename", "string", "none");
 end
 
 --------------------------------------------------------------------------------
@@ -7607,6 +7608,52 @@ function Menu:ui2DrawPlayDirectConnect(intensity)
 	applySettingsTable(s2, s1);
 end
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+function Menu:ui2DrawPlayReplay(intensity)
+	local optargs = {
+		intensity = intensity
+	};
+	
+	nvgSave();
+	
+	-- s1 == current settings
+	local s1 = {};
+	s1.ui_menu_replayfilename = consoleGetVariable("ui_menu_replayfilename");
+	
+	-- s2 = new settings
+	local s2 = {};
+	
+	-- COL 1
+	local colWidth = 650;
+	local colIndent = 250;
+	local x = -620;
+	local y = -250;
+	ui2Label("Replay Filename", x, y, optargs);
+	s2.ui_menu_replayfilename = ui2EditBox(s1.ui_menu_replayfilename, x + colIndent, y, colWidth - colIndent, optargs);
+	y = y + 60;
+	
+
+	local col1endY = y;
+	
+	-- COL 2
+	local x = 150;
+	local y = -250;
+	colWidth = 350;
+
+	if ui2Button("Play", -620 + 650 - 300, col1endY, 300, 35, optargs) then
+		-- disconnect first
+		consolePerformCommand("disconnect");	
+		consolePerformCommand("play " .. s1.ui_menu_replayfilename);
+		hideMenu();
+	end
+
+	nvgRestore();
+
+	-- apply new settings (if anything has changed)
+	applySettingsTable(s2, s1);
+end
+
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -8024,6 +8071,7 @@ function Menu:show()
 				[2] = { name = "Matchmaking", draw = self.ui2DrawQuickPlay, onSelected = goneToFindGame },
 				[3] = { name = "Server Browser", draw = self.ui2DrawFindServer, onSelected = serverListRefresh },
 				[4] = { name = "Host Game", draw = self.ui2DrawPlayCreateServer },
+				[5] = { name = "Replay", draw = self.ui2DrawPlayReplay },
 --				[5] = { name = "Practice Range", draw = self.ui2DrawTraining },
 --				[6] = { name = "Bots", draw = self.ui2DrawTrainingBots },
 			},
