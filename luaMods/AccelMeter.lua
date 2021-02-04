@@ -19,7 +19,7 @@ function AccelMeter:initialize()
   CheckSetDefaultValue(self.userData, "trainingModeToggle", "boolean", false);
   CheckSetDefaultValue(self.userData, "hideDot", "boolean", false);
   CheckSetDefaultValue(self.userData, "innerDiameter", "number", 78);
-  CheckSetDefaultValue(self.userData, "cjSpeed", "number", 400);
+  CheckSetDefaultValue(self.userData, "cjSpeed", "number", 385);
 end
 
 --------------------------------------------------------------------------------
@@ -242,6 +242,7 @@ function AccelMeter:draw()
   local effBlue = 255
   local backopa = 40
   local cjopa = 0
+  local ringColor = Color(0, 0, 0, 64)
   if math.floor(playerups) > baseSpeed then
      if efficiency<0 then 
        effRed = 255
@@ -256,7 +257,14 @@ function AccelMeter:draw()
        effGreen = 255
        effBlue = 255
      end
-     if isCJ then cjopa = 80*math.min(1, (playerups-baseSpeed)/(cjSpeed-baseSpeed)) end
+     if isCJ then 
+       cjopa = (playerups-baseSpeed)/(cjSpeed-baseSpeed)
+       if cjopa >= 1 then
+          cjopa = 1
+          ringColor = Color(255, 255, 255, 64)
+       end
+       cjopa = 80*cjopa
+     end
   else
     backopa = backopa * playerups/320
   end
@@ -314,62 +322,62 @@ function AccelMeter:draw()
   nvgMoveTo(0, -outerRadius)
   nvgLineTo(0, -innerRadius)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(outerSQRT, -outerSQRT)
   nvgLineTo(innerSQRT, -innerSQRT)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(outerRadius, 0)
   nvgLineTo(innerRadius, 0)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(outerSQRT, outerSQRT)
   nvgLineTo(innerSQRT, innerSQRT)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(0, outerRadius)
   nvgLineTo(0, innerRadius)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(-outerSQRT, outerSQRT)
   nvgLineTo(-innerSQRT, innerSQRT)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(-outerRadius, 0)
   nvgLineTo(-innerRadius, 0)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgMoveTo(-outerSQRT, -outerSQRT)
   nvgLineTo(-innerSQRT, -innerSQRT)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   nvgBeginPath()
   nvgCircle(0, 0, outerRadius)
   nvgStrokeWidth(3)
-  nvgStrokeColor(Color(0, 0, 0, 64))
+  nvgStrokeColor(ringColor)
   nvgStroke()
 
   ----------------------
