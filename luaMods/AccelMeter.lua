@@ -19,7 +19,7 @@ function AccelMeter:initialize()
   CheckSetDefaultValue(self.userData, "trainingModeToggle", "boolean", false);
   CheckSetDefaultValue(self.userData, "hideDot", "boolean", false);
   CheckSetDefaultValue(self.userData, "innerDiameter", "number", 78);
-  CheckSetDefaultValue(self.userData, "cjSpeed", "number", 385);
+  CheckSetDefaultValue(self.userData, "cjSpeed", "number", 390);
 end
 
 --------------------------------------------------------------------------------
