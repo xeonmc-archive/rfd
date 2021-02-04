@@ -2,8 +2,3 @@
 *.light
 *.nav
 *.preview
-# ignore folders steamapps, base, and maps, to replace with our own set
-reflexFromSteam/*
-!reflexFromSteam/*.*
-# ignore the default cfgs
-reflexFromSteam/dedicatedserver*
