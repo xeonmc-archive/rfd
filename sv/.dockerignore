@@ -5,5 +5,7 @@
 # ignore folders steamapps, base, and maps, to replace with our own set
 reflexFromSteam/*
 !reflexFromSteam/*.*
-# ignore the default cfg
+# ignore the default cfgs
 reflexFromSteam/dedicatedserver*
+# ignore the workshop-downloaded assets
+reflexFromSteam/steamapps?
