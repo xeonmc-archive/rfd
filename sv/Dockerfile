@@ -1,7 +1,7 @@
 FROM i386/alpine:3.10.5
 USER root
-RUN apk update
-RUN apk add wine freetype
+RUN apk update &&\
+    apk add wine freetype
 
 ADD ./reflexFromSteam /reflex
 ADD ./shippingMaps /reflex/maps
