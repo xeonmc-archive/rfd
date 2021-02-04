@@ -1,4 +1,4 @@
 # ignore the massive lighting and unnecessary navmesh & preview files
-*.light
-*.nav
-*.preview
+**/*.light
+**/*.nav
+**/*.preview
