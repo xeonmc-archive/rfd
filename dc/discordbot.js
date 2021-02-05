@@ -1,10 +1,10 @@
 const pathToReplays = '/replays/';
 const pathToSentLog = './persistent/sentLog.json';
-const PathToSecrets = './persistent/secrets.json';
+const pathToSecrets = './persistent/secrets.json';
 
 const fs = require('fs');
 const path = require('path');
-const creds = require(PathToSecrets);
+const creds = require(pathToSecrets);
 const compressing = require('compressing');
 const chokidar = require('chokidar');
 const Discord = require('discord.js');
