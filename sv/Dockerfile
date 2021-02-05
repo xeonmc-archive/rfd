@@ -1,16 +1,8 @@
-FROM ubuntu:16.04 as downloader
-RUN apt-get update  && apt-get dist-upgrade -y &&\
-	apt-get install -y wget lib32gcc1 lib32stdc++6
-RUN useradd -m steam
-RUN mkdir -p /steam/steamcmd_linux
-RUN chown -R steam /steam
-USER steam
-WORKDIR /steam/steamcmd_linux
-RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz 
-RUN tar -xf steamcmd_linux.tar.gz
-RUN ./steamcmd.sh +login anonymous +quit
-RUN mkdir /steam/reflex
-RUN ./steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir ../reflex +app_update 329740 +quit
+FROM steamcmd/steamcmd as downloader
+USER root
+WORKDIR /steam/reflex
+WORKDIR /usr/bin
+RUN steamcmd +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /steam/reflex +app_update 329740 +quit
 WORKDIR /steam/reflex
 RUN rm -R -- */
 
