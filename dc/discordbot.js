@@ -10,39 +10,57 @@ const chokidar = require('chokidar');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-var uploadHistory;
+let uploadHistory = {};
 try {
-  uploadHistory = require(pathToSentLog);
-  if (!Array.isArray(uploadHistory.list)) {
-      uploadHistory = {"list":[]};
-  }
+  let readLog = require(pathToSentLog);
+  if (typeof readLog === 'object') uploadHistory = readLog;
 } catch(err) {
   console.error(err);
-  uploadHistory = {"list":[]};
 }
 
+console.log("logging in with token " + creds.token);
 client.login(creds.token);
-console.log(creds.token);
-console.log(creds.channelID);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     chokidar.watch(pathToReplays).on('add', (filepath, event) => {
         console.log("New file? " + filepath);
-        if ( filepath.endsWith(".rep") && !(uploadHistory.list.includes(filepath)) ) {
-            const filename = path.basename(filepath, path.extname(filepath));
-            const destfile = pathToReplays+filename+".zip";
+        const filename = path.basename(filepath, path.extname(filepath));
+        if ( filepath.endsWith(".rep") && !(filename in uploadHistory) ) {
             console.log("Haven't seen " + filename + " before. Uploading...");
+            uploadHistory[filename] = {};
+            const destfile = pathToReplays + filename + ".zip";
             compressing.zip.compressFile(filepath, destfile)
             .then(() => {
                 const attachment = new Discord.MessageAttachment(destfile);
-                client.channels.cache.get(creds.channelID).send(attachment)
-                .then((value) => {
-                    console.log(value);
-                    console.log("Upload finished. Writing " + filepath + " to upload history.");
-                    uploadHistory.list.push(filepath);
-                    fs.writeFileSync(pathToSentLog, JSON.stringify(uploadHistory, null, 2));
-                }).catch(console.error);
+                for (const channelID of creds.targetCIDs) {
+                    client.channels.cache.get(channelID).send(attachment)
+                    .then(msg=>{
+                        msg.attachments.forEach(Attachment => {
+                            console.log(Attachment.url)
+                            uploadHistory[filename][channelID] = Attachment.url;
+                        })
+                        try {
+                            fs.writeFile(pathToSentLog, JSON.stringify(uploadHistory, null, 2), (err) => {
+                                if (err) throw err;
+                                console.log("success logged for " + filename + " at " + channelID);
+                            })
+                        } catch(err) {
+                            console.log(err);
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                        uploadHistory[filename][channelID] = "failed";
+                        try {
+                            fs.writeFile(pathToSentLog, JSON.stringify(uploadHistory, null, 2), (err) => {
+                                if (err) throw err;
+                                console.log("failure logged for " + filename + " at " + channelID);
+                            })
+                        } catch(err) {
+                            console.log(err);
+                        }
+                    });
+                } 
             }).catch(console.error);
         }
     });
