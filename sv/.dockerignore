@@ -1,5 +1,6 @@
-# ignore the massive lighting and unnecessary navmesh & preview files
 **/*.light
 **/*.nav
 **/*.preview
 **/forge.map
+**/*.vbs
+**/game*
