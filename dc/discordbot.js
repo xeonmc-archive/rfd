@@ -46,7 +46,7 @@ client.on('ready', () => {
                                 console.log("success logged for " + filename + " at " + channelID);
                             })
                         } catch(err) {
-                            console.log(err);
+                            console.error(err);
                         }
                     }).catch(err=>{
                         console.log(err);
@@ -57,7 +57,7 @@ client.on('ready', () => {
                                 console.log("failure logged for " + filename + " at " + channelID);
                             })
                         } catch(err) {
-                            console.log(err);
+                            console.error(err);
                         }
                     });
                 } 
