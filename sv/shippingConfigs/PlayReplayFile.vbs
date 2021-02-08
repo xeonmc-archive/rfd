@@ -1,22 +1,36 @@
 Set fso = CreateObject("Scripting.FileSystemObject")
+
 gameFolderPath = fso.GetParentFolderName(WScript.ScriptFullName)
 replayFolderPath = gameFolderPath & "\replays"
+
 If WScript.Arguments.Count > 0 Then
   For Each item In WScript.Arguments
     replayfull = item
-    replayname = fso.GetBaseName(replayfull)
-    replaypath = fso.GetParentFolderName(replayfull)
   Next
 Else
   replayfull = SelectFile()
   If Len(replayfull) = 0 Then 
     WScript.Quit
   End If
-  replayname = fso.GetBaseName(replayfull)
-  replaypath = fso.GetParentFolderName(replayfull)
 End If
+
+replayname = fso.GetBaseName(replayfull)
+replayextn = fso.GetExtensionName(replayfull)
+replaypath = fso.GetParentFolderName(replayfull)
+
 If StrComp(replaypath, replayFolderPath, 1) Then
-  fso.CopyFile replayfull, replayFolderPath & "\"
+  If replayextn = "rep" Then
+    fso.CopyFile replayfull, replayFolderPath & "\"
+  ElseIf replayextn = "zip" Then 
+    Set objShell = CreateObject("Shell.Application")
+    Set FilesInZip=objShell.NameSpace(replayfull).Items()
+    objShell.NameSpace(replayFolderPath).copyHere FilesInZip, 16
+    Set objShell = Nothing
+    Set FilesInZip = Nothing
+  Else
+    WScript.echo("This is not a replay file.")
+    WScript.Quit
+  End If
 End If
 
 Set objShell = CreateObject("Wscript.Shell")
