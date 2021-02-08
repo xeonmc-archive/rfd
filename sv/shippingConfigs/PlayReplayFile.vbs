@@ -17,7 +17,6 @@ End If
 replayname = fso.GetBaseName(replayfull)
 replayextn = fso.GetExtensionName(replayfull)
 replaypath = fso.GetParentFolderName(replayfull)
-Set fso = Nothing
 
 If StrComp(replaypath, replayFolderPath, 1) Then
   If replayextn = "rep" Then
@@ -37,8 +36,8 @@ End If
 Set objShell = CreateObject("Wscript.Shell")
 objShell.CurrentDirectory = gameFolderPath
 objShell.Run "reflex.exe +play " & replayname
-
-
+Set fso = Nothing
+Set objShell = Nothing
 
 Function SelectFile( )	
   Dim objExec, strMSHTA, wshShell
