@@ -26,19 +26,14 @@ objShell.Run "reflex.exe +play " & replayname
 
 
 Function SelectFile( )	
-
-Dim objExec, strMSHTA, wshShell
-
-SelectFile = ""
-
-' For use in "plain" VBScript only:
-strMSHTA = "mshta.exe ""about:<input type=file id=FILE>" & "<script>FILE.click();new ActiveXObject('Scripting.FileSystemObject')" & ".GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>"""
-
-Set wshShell = CreateObject( "WScript.Shell" )
-Set objExec = wshShell.Exec( strMSHTA )
-
-SelectFile = objExec.StdOut.ReadLine( )
-
-Set objExec = Nothing
-Set wshShell = Nothing
+  Dim objExec, strMSHTA, wshShell
+  SelectFile = ""
+  strMSHTA = "mshta.exe ""about:<input type=file id=FILE>" & _
+                         "<script>FILE.click();new ActiveXObject('Scripting.FileSystemObject')" & _
+                         ".GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>"""
+  Set wshShell = CreateObject( "WScript.Shell" )
+  Set objExec = wshShell.Exec( strMSHTA )
+  SelectFile = objExec.StdOut.ReadLine( )
+  Set objExec = Nothing
+  Set wshShell = Nothing
 End Function
