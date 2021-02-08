@@ -18,19 +18,20 @@ replayname = fso.GetBaseName(replayfull)
 replayextn = fso.GetExtensionName(replayfull)
 replaypath = fso.GetParentFolderName(replayfull)
 
-If StrComp(replaypath, replayFolderPath, 1) Then
-  If replayextn = "rep" Then
+
+If replayextn = "zip" Then
+  Set objShell = CreateObject("Shell.Application")
+  Set FileInZip=objShell.NameSpace(replayfull).Items.Item(replayname & ".rep")
+  objShell.NameSpace(replayFolderPath).copyHere FileInZip, 16
+  Set objShell = Nothing
+  Set FilesInZip = Nothing
+ElseIf replayextn = "rep" Then
+  If StrComp(replaypath, replayFolderPath, 1) Then
     fso.CopyFile replayfull, replayFolderPath & "\"
-  ElseIf replayextn = "zip" Then 
-    Set objShell = CreateObject("Shell.Application")
-    Set FilesInZip=objShell.NameSpace(replayfull).Items()
-    objShell.NameSpace(replayFolderPath).copyHere FilesInZip, 16
-    Set objShell = Nothing
-    Set FilesInZip = Nothing
-  Else
-    WScript.echo("This is not a replay file.")
-    WScript.Quit
   End If
+Else
+  WScript.echo("No replay file found.")
+  WScript.Quit
 End If
 
 Set objShell = CreateObject("Wscript.Shell")
