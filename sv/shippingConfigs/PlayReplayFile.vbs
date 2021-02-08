@@ -17,6 +17,7 @@ End If
 replayname = fso.GetBaseName(replayfull)
 replayextn = fso.GetExtensionName(replayfull)
 replaypath = fso.GetParentFolderName(replayfull)
+Set fso = Nothing
 
 If StrComp(replaypath, replayFolderPath, 1) Then
   If replayextn = "rep" Then
