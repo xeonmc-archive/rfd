@@ -1,8 +1,8 @@
 Set fso = CreateObject("Scripting.FileSystemObject")
-
 gameFolderPath = fso.GetParentFolderName(WScript.ScriptFullName)
 replayFolderPath = gameFolderPath & "\replays"
 
+' Check if there's a filepath reference via drag and drop
 If WScript.Arguments.Count > 0 Then
   For Each item In WScript.Arguments
     replayfull = item
@@ -18,28 +18,37 @@ replayname = fso.GetBaseName(replayfull)
 replayextn = fso.GetExtensionName(replayfull)
 replaypath = fso.GetParentFolderName(replayfull)
 
-
+' Extract or copy replay file to the replays folder.
 If replayextn = "zip" Then
   Set objShell = CreateObject("Shell.Application")
-  Set FileInZip=objShell.NameSpace(replayfull).Items.Item(replayname & ".rep")
-  objShell.NameSpace(replayFolderPath).copyHere FileInZip, 16
+  Set FilesInZip = objShell.NameSpace(replayfull).Items()
+  zipname = replayname
+  For Each item in FilesInZip
+    replayname = fso.GetBaseName(item)
+    If replayname = zipname Then
+      Exit For
+    End If
+  Next
+  objShell.NameSpace(replayFolderPath).copyHere FilesInZip, 16
   Set objShell = Nothing
   Set FilesInZip = Nothing
 ElseIf replayextn = "rep" Then
   If StrComp(replaypath, replayFolderPath, 1) Then
     fso.CopyFile replayfull, replayFolderPath & "\"
   End If
-Else
-  WScript.echo("No replay file found.")
-  WScript.Quit
 End If
 
-Set objShell = CreateObject("Wscript.Shell")
-objShell.CurrentDirectory = gameFolderPath
-objShell.Run "reflex.exe +play " & replayname
-Set fso = Nothing
-Set objShell = Nothing
+' Check that replay file is actually in the replays folder before running, otherwise quit.
+If fso.FileExists(replayFolderPath & "\" & replayname & ".rep") Then
+  Set objShell = CreateObject("Wscript.Shell")
+  objShell.CurrentDirectory = gameFolderPath
+  objShell.Run "reflex.exe +play " & replayname
+  Set objShell = Nothing
+Else
+  WScript.echo "No matching replay file found."
+End If
 
+Set fso = Nothing
 
 Function GetFileDlg(sIniDir, sFilter, sTitle, sShow)
     ' source http://forum.script-coding.com/viewtopic.php?pid=75356#p75356
