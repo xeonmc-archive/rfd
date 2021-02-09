@@ -8129,7 +8129,7 @@ function Menu:queryCurrentSensScale()
 		return "Unit: mrad";
 	elseif yaw == 2908882 then
 		return "Unit: arcmin";
-	elseif yaw == 174532925 then
+	elseif yaw == 174532928 then
 		return "Unit: deg";
 	elseif yaw == 12217305 then
 		return "Valorant";
