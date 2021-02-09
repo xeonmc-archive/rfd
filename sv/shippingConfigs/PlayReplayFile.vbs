@@ -32,10 +32,8 @@ If replayextn = "zip" Then
   objShell.NameSpace(replayFolderPath).copyHere FilesInZip, 16
   Set objShell = Nothing
   Set FilesInZip = Nothing
-ElseIf replayextn = "rep" Then
-  If StrComp(replaypath, replayFolderPath, 1) Then
+ElseIf replayextn = "rep" AND StrComp(replaypath, replayFolderPath, 1) <> 0 Then
     fso.CopyFile replayfull, replayFolderPath & "\"
-  End If
 End If
 
 ' Check that replay file is actually in the replays folder before running, otherwise quit.
