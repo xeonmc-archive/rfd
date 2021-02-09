@@ -34,8 +34,7 @@ If replayextn = "zip" Then
   Set FilesInZip = Nothing
 ElseIf replayextn = "rep" AND StrComp(replaypath, replayFolderPath, 1) <> 0 Then
   If InStr(1, replaypath, replayFolderPath, 1) = 1 Then
-    ' add one Len since you want string starting AFTER the end of the prefix rather than including that character
-    replayname = Mid(replaypath, Len(replayFolderPath & "\")+1) & "\" & replayname
+    replayname = TrimLeft(replaypath, Len(replayFolderPath & "\")) & "\" & replayname
   Else
     fso.CopyFile replayfull, replayFolderPath & "\"
   End If
@@ -74,4 +73,8 @@ Function GetFileDlg(sIniDir, sFilter, sTitle, sShow)
     oWnd.Document.Title = sTitle
     GetFileDlg = oWnd.q(sIniDir, sFilter, sTitle)
     oWnd.Close
+End Function
+
+Function TrimLeft(inputString, trimLength)
+  TrimPrefix = Mid(inputString, trimLength+1)
 End Function
