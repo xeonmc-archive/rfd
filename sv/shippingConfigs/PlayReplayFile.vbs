@@ -18,7 +18,7 @@ replayname = fso.GetBaseName(replayfull)
 replayextn = fso.GetExtensionName(replayfull)
 replaypath = fso.GetParentFolderName(replayfull)
 
-' Extract or copy replay file to the replays folder.
+' Extract or copy replay file to the replays folder, or identify subfolders within the replay folder
 If replayextn = "zip" Then
   Set objShell = CreateObject("Shell.Application")
   Set FilesInZip = objShell.NameSpace(replayfull).Items()
@@ -33,7 +33,12 @@ If replayextn = "zip" Then
   Set objShell = Nothing
   Set FilesInZip = Nothing
 ElseIf replayextn = "rep" AND StrComp(replaypath, replayFolderPath, 1) <> 0 Then
+  If InStr(1, replaypath, replayFolderPath, 1) = 1 Then
+    ' add one Len since you want string starting AFTER the end of the prefix rather than including that character
+    replayname = Mid(replaypath, Len(replayFolderPath & "\")+1) & "\" & replayname
+  Else
     fso.CopyFile replayfull, replayFolderPath & "\"
+  End If
 End If
 
 ' Check that replay file is actually in the replays folder before running, otherwise quit.
