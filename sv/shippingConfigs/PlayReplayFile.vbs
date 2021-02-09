@@ -76,5 +76,5 @@ Function GetFileDlg(sIniDir, sFilter, sTitle, sShow)
 End Function
 
 Function TrimLeft(inputString, trimLength)
-  TrimPrefix = Mid(inputString, trimLength+1)
+  TrimLeft = Mid(inputString, trimLength+1)
 End Function
